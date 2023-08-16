@@ -1,4 +1,5 @@
 import os
+import struct
 from azure.storage.filedatalake import (
     DataLakeServiceClient,
     DataLakeDirectoryClient,
@@ -42,8 +43,9 @@ class AzureDataLake:
             content = ''
 
             for row in file_contents:
-                content = content + row + '\n'
+                content = content + str(row) + '\n'
 
+            content = content.replace("'", '"')
             file_client.append_data(data=content, offset=0, length=len(content))
 
             file_client.flush_data(len(content))
